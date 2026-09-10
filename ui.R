@@ -86,7 +86,7 @@ ui <- dashboardPage(
     tags$li(
       class = "dropdown",
       tags$a(
-        href = "https://www.totabc.org/",
+        href = "https://tota-insto-hub.share.connect.posit.cloud/",
         icon("globe"),
         " TOTA INSTO HUB",
         style = "
@@ -104,7 +104,7 @@ ui <- dashboardPage(
       menuItem("Overview", tabName = "overview", icon = icon("readme")),
       menuItem("Disposal Rates", tabName = "disposal_rates", icon = icon("trash-can")),
       menuItem("Organic Waste", tabName = "organic", icon = icon("carrot")),
-      menuItem("Back to Hub", tabName = NULL, icon = icon("globe"), href = "https://www.totabc.org/")
+      menuItem("Back to Hub", tabName = NULL, icon = icon("globe"), href = "https://tota-insto-hub.share.connect.posit.cloud/")
     ),
     
     tags$img(
