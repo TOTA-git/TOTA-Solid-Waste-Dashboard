@@ -104,7 +104,7 @@ ui <- dashboardPage(
       menuItem("Overview", tabName = "overview", icon = icon("readme")),
       menuItem("Disposal Rates", tabName = "disposal_rates", icon = icon("trash-can")),
       menuItem("Organic Waste", tabName = "organic", icon = icon("carrot")),
-      menuItem("Back to Hub", tabName = NULL, icon = icon("globe"), href = "https://tota-insto-hub.share.connect.posit.cloud/")
+      menuItem("Back to Hub", tabName = NULL, icon = icon("globe"), href = "https://tota-insto-hub.share.connect.posit.cloud/", newtab = FALSE)
     ),
     
     tags$img(
