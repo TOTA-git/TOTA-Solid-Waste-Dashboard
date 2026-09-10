@@ -1,0 +1,4 @@
+dataset,timestamp,status,n_rows,message
+municipal_waste_disposed,2026-09-09 20:56:11,success,945,NA
+organic_waste_bc,2026-09-09 20:56:13,success,24,NA
+organic_waste_lastModified,2026-09-09 20:56:14,success,1,NA
