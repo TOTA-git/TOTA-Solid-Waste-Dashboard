@@ -387,10 +387,6 @@ ui <- dashboardPage(
             width = 12,
             style = "font-size: 18px;"
           ),
-
-          valueBoxOutput("NumActive", width = 4),
-          valueBoxOutput("PrecentFoodWaste", width = 4),
-          valueBoxOutput("PrecentBreweryWaste", width = 4),
           
           infoBox(
             title = "Data Freshness",
@@ -414,6 +410,10 @@ ui <- dashboardPage(
                       " defined under Schedule 12, Organic Matter Suitable for Composting. A facility doesn't necessarily accept every material on that list.",
                       style = "font-size: 14px; font-weight: normal;"),
           ),
+          
+          valueBoxOutput("NumActive", width = 4),
+          valueBoxOutput("PrecentFoodWaste", width = 4),
+          valueBoxOutput("PrecentBreweryWaste", width = 4),
 
           box(
             title = "Active Compost Facilities",
