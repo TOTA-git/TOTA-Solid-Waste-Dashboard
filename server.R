@@ -473,8 +473,6 @@ server <- function(input, output, session) {
               tags$td(format(df_municipal_waste_disposed_filtered$Total_Disposed_Tonnes[i], big.mark = ",")),
               tags$td(df_municipal_waste_disposed_filtered$Disposal_Rate_kg[i])
             )
-            
-            
           })
         ),
         
@@ -558,7 +556,6 @@ server <- function(input, output, session) {
       "Thompson Okanagan Tourism Region" = "#D11B4A"
     )
 
-    
     m_base <- leaflet(data = df_TO_boundary)  
     m_tiles <- addTiles(m_base)
     m_bound <- addPolygons(m_tiles,

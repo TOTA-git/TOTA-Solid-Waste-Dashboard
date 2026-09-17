@@ -128,11 +128,12 @@ ui <- dashboardPage(
       tabItem(
         tabName = "overview",
         
-        # tags$img(
-        #   src = "banner.png",
-        #   width = "100%",
-        #   style = "position: relative;"
-        # ),
+        tags$img(
+          src = "banner.png",
+          width = "100%",
+          style = "position: relative;"
+        ),
+        p("Destination BC/Andrew Strain"),
         
         fluidRow(
           width = "100%",
@@ -150,7 +151,7 @@ ui <- dashboardPage(
                 style = "color: #76ACA9; text-decoration: underline;"
               ),
               " and contribute to ongoing efforts to better understand the relationship between
-               solid waste and tourism in the Thompson Okanagan Region. "
+               solid waste and tourism in the Thompson Okanagan Region."
             ),
             br(),
             style = "font-size: 18px;"
@@ -176,7 +177,16 @@ ui <- dashboardPage(
               )
             )),
             
-            width = 12,
+            width = 6,
+            h2("What is solid waste management?"),
+            
+            p("Solid waste management refers to the process of collecting and disposing of garbage, recyclables, and organic materials. 
+            Waste generation is influenced not only buy population, but also by tourists. Solid waste management is also an environmental service, 
+            as it helps safely manage waste that would otherwise pollute the land on water around us. Waste can be managed by landfills, incineration, 
+            recycling, or repourposing orgainc materials. Effective waste management helps reduce the environmental impacts of waste while supporting 
+            cleaner and healthier communities."),
+            br(),
+            
             h2("What Can Be Explored?"),
             
             actionLink(
@@ -200,6 +210,17 @@ ui <- dashboardPage(
               "View compost production facilities throughout the Thompson Okanagan and the accepted organic materials."
             ),
             br()
+          ),
+          
+          column(
+            width = 6,
+            tags$img(
+              src = "region_map_bg.png",
+              width = "70%",
+              style = "display: block; margin: 0 auto;"
+            ),
+            
+            p("The scope of the dashboard is the Thompson Okanagan Tourism Region,", br(), "British Columbia, Canada", style = "text-align: center; font-size: 14px;"),
           ),
           
           tags$style(
