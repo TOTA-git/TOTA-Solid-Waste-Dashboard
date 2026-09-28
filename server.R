@@ -375,9 +375,14 @@ server <- function(input, output, session) {
                  fill = "#76ACA9",
                  linewidth = 0.5) +
      
-        scale_x_continuous(breaks = c(seq(1990, 2018, by = 4), 2021, 2024),
-                           labels = c(seq(1990, 2018, by = 4), 2021, 2024),
-                           expand = expansion(0.04)) +
+      scale_x_continuous(
+        breaks = seq(
+          min(df$Year, na.rm = TRUE),
+          max(df$Year, na.rm = TRUE),
+          by = 4
+        ),
+        expand = expansion(mult = c(0, 0))
+      )+
      
         scale_y_continuous(expand = c(0,0), 
                            breaks = c(0, 250, 500, 750, 1000),
@@ -392,7 +397,7 @@ server <- function(input, output, session) {
         theme(legend.title = element_blank(),
               axis.title = element_text(size = if (is_narrow) 10 else 16),
               axis.text = element_text(size = if (is_narrow) 8 else 12),
-              axis.text.x = element_text(angle = if (is_narrow) 60 else 30))
+              axis.text.x = element_text(angle = if (is_narrow) 60 else 0))
    
    ggplotly(plot, tooltip = "text") %>%
      layout(

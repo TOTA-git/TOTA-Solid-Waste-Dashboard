@@ -182,7 +182,7 @@ ui <- dashboardPage(
             
             p("Solid waste management refers to the process of collecting and disposing of garbage, recyclables, and organic materials. 
             Waste generation is influenced not only buy population, but also by tourists. Solid waste management is also an environmental service, 
-            as it helps safely manage waste that would otherwise pollute the land on water around us. Waste can be managed by landfills, incineration, 
+            as it helps safely manage waste that would otherwise pollute the land and water around us. Waste can be managed by landfills, incineration, 
             recycling, or repourposing orgainc materials. Effective waste management helps reduce the environmental impacts of waste while supporting 
             cleaner and healthier communities."),
             br(),
@@ -335,10 +335,10 @@ ui <- dashboardPage(
               or materials that are reused or recycled."),
             h4("Interpreting the data"),
             p("Differences in disposal rates between regions can be influenced by population density, economic activity,
-              tourism and transient populations, access to recycling markets, waste-management infrastructure, and other
+              tourism, access to recycling, waste-management infrastructure, and other
               regional factors. Historical data should also be interpreted with caution because collection methods have 
               changed over time. The Province notes that data from 2012 onward were collected using the same methodology,
-              making this period more appropriate for assessing trends. Where data are unavailable, a verifiable estimate was not available."),
+              making this period more appropriate for assessing trends. Where data is unavailable, a verifiable estimate was not available."),
             p("For more details: ",
               tags$a(
                 href = "https://www.env.gov.bc.ca/soe/indicators/sustainability/municipal-solid-waste.html",
