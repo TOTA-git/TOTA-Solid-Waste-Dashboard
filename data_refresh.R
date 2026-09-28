@@ -47,8 +47,7 @@ refresh_dataset <- function(name, fetch, write) {
   )
 }
 
-
-#MUNICIPAL SOILD WASTE DISPOSED IN BC ---------------------------------------------------------------------------
+#MUNICIPAL SOILD WASTE DISPOSED IN BC --------------------------------------------------------------
 refresh_dataset(
   "municipal_waste_disposed",
   function() {
@@ -59,7 +58,7 @@ refresh_dataset(
   function(df) atomic_write_csv(df, file.path(CACHE_DIR, "municipal_waste_disposed.csv"))
 )
 
-#ORGANIC WASTE BC ------------------------------------------------------------------------------
+#ORGANIC WASTE BC ----------------------------------------------------------------------------------
 refresh_dataset(
   "organic_waste_bc",
   function(){
@@ -78,7 +77,7 @@ refresh_dataset(
     
     region <- st_transform(region, st_crs(omrr_sf))
     
-    # Keep only OMRR locations inside the tourism region
+    # Keep only OMRR locations inside the thompson okanagna tourism region
     omrr_sf <- st_filter(
       omrr_sf,
       region,
@@ -96,7 +95,7 @@ refresh_dataset(
   function(df) atomic_write_csv(df, file.path(CACHE_DIR, "organic_waste_bc.csv"))
 )
 
-#ORGANIC WASTE BC LAST MODIFIED -------------------------------------------------------------
+#ORGANIC WASTE BC LAST MODIFIED -------------------------------------------------------------------
 refresh_dataset(
   "organic_waste_lastModified",
   function(){

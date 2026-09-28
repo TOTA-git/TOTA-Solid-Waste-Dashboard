@@ -4,7 +4,7 @@
 
 CACHE_DIR <- "data/cache"
 
-# --- Atomic writes -----------------------------------------------------
+#ATOMIC WRITE ---------------------------------------------------------------------------
 # Write to a temp file in the same directory, then rename over the
 # target. A refresh that dies partway through writing never leaves a
 # truncated/corrupt cache file behind - readers always see either the
@@ -16,7 +16,7 @@ atomic_write_csv <- function(df, path) {
   file.rename(tmp, path)
 }
 
-# --- Cache reads (used by global.R) -------------------------------------
+#READ CACHE -----------------------------------------------------------------------------
 # Error clearly instead of silently starting the app with no data, so a
 # missing/empty cache is obvious rather than surfacing as a confusing
 # downstream plotting error.
@@ -31,9 +31,9 @@ read_cache_csv <- function(name, ...) {
   readr::read_csv(path, show_col_types = FALSE, ...)
 }
 
-# --- Refresh logging ------------------------------------------------------
+#REFRESH LOG ----------------------------------------------------------------------------
 # One row per dataset per refresh attempt, so refresh_log.csv
-# builds a history of what succeeded/failed.
+# shows what succeeded/failed.
 log_refresh <- function(name, status, message = NA_character_, n_rows = NA_integer_) {
   dir.create(CACHE_DIR, recursive = TRUE, showWarnings = FALSE)
   log_path <- file.path(CACHE_DIR, "refresh_log.csv")
@@ -48,8 +48,8 @@ log_refresh <- function(name, status, message = NA_character_, n_rows = NA_integ
   readr::write_csv(entry, log_path, append = file.exists(log_path))
 }
 
-# --- Clear Log -----------------------------------------------------------
-#Clears refresh_log.csv before each refresh
+#CLEAR LOG  ----------------------------------------------------------------------------
+#Clears refresh_log.csv before each refresh as not to build massive refresh log over time
 clear_refresh_log <- function() {
   dir.create(CACHE_DIR, recursive = TRUE, showWarnings = FALSE)
   

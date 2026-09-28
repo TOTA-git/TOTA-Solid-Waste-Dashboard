@@ -2,7 +2,7 @@ server <- function(input, output, session) {
   
   #DISPOSAL RATE PAGE ==================================================================================================
   
-  #DATE THE MUNICIPAL_WASTE_DISPOSED WAS LAST UPDATED BY ENVIRONMENTAL REPORTING BC IN DATA CATALOGUE
+  #DATE THE MUNICIPAL_WASTE_DISPOSED WAS LAST UPDATED BY ENVIRONMENTAL REPORTING BC IN DATA CATALOGUE ------------------
   output$data_last_updated_WD <- renderText({
     metadata <- fromJSON(
       "https://catalogue.data.gov.bc.ca/api/3/action/resource_show?id=d2648733-e484-40f2-b589-48192c16686b"
@@ -15,7 +15,7 @@ server <- function(input, output, session) {
     )
   })
   
-  #VALUE BOX OF TOTAL WASTE DISPOSED IN THE T-O AREA FOR THE SELECED YEAR
+  #VALUE BOX OF TOTAL WASTE DISPOSED IN THE T-O AREA FOR THE SELECED YEAR ----------------------------------------------
   output$TotalWasteRecentYear <- renderValueBox({
     
     total <- df_municipal_waste_disposed_TO %>%
@@ -40,7 +40,7 @@ server <- function(input, output, session) {
     }
   })
   
-  #THE % OF WASTE T-O CONTRIBUTED TO BCs TOTAL WASTE DISPOSED
+  #THE % OF WASTE T-O CONTRIBUTED TO BCs TOTAL WASTE DISPOSED ----------------------------------------------------------
   output$TotalBCtoTO <- renderValueBox({
     
     BC_total <- df_municipal_waste_disposed %>%
@@ -70,10 +70,9 @@ server <- function(input, output, session) {
         color = "teal"
       )
     }
-
   })
   
-  #YOY GROWTH OF AMOUNT DISPOSED
+  #YOY GROWTH OF AMOUNT DISPOSED ---------------------------------------------------------------------------------------
   output$YoY <- renderValueBox({
     
     selected_year <- as.numeric(input$year)
@@ -110,7 +109,7 @@ server <- function(input, output, session) {
     }
   })
   
-  #WASTE DISPOSED PER CAPITA (TOTAL T-O WASTE / T-O TOTAL POPULATION = TONNES/PERSON)
+  #WASTE DISPOSED PER CAPITA (TOTAL T-O WASTE / T-O TOTAL POPULATION = TONNES/PERSON) ----------------------------------
   output$WastePerCapita <- renderValueBox({
     
     total_tonnes <- df_municipal_waste_disposed_TO %>%
@@ -143,10 +142,10 @@ server <- function(input, output, session) {
     }
   })
   
-  #Store selected region - used for REGIONAL WASTE MAP & HISTORICAL BAR CHART
-  selectedRegion <- reactiveValues(Region = "Thompson Okanagan")
+  #Store selected region - used for REGIONAL WASTE MAP & HISTORICAL BAR CHART ------------------------------------------
+  selectedRegion <- reactiveValues(Region = "Thompson Okanagan") #if region not selected Thompson Okanagan is the default
   
-  #REGIONAL WASTE MAP------------------------------------------------------------------------------------------------
+  #REGIONAL WASTE MAP --------------------------------------------------------------------------------------------------
   output$MunicipalWasteMap <- renderLeaflet({
 
     df_municipal_waste_disposed_filtered <- df_municipal_waste_disposed_TO %>%
@@ -160,7 +159,7 @@ server <- function(input, output, session) {
     has_data <- any(!is.na(df_regions_map$Disposal_Rate_kg))
 
     map <- leaflet() %>%
-      addPolygons(
+      addPolygons( #Add BC bounds
         data = df_bc,
         fill = FALSE,
         color = "#555555",
@@ -171,17 +170,17 @@ server <- function(input, output, session) {
       if (has_data){
         pal <- colorNumeric(
           palette = c( 
-            "#A6D8D8",
+            "#A6D8D8", # low
             "#4A9A9A",
             "#266F73",
-            "#004B55"   # high
+            "#004B55"  # high
           ),
           domain = df_regions_map$Disposal_Rate_kg,
           na.color = "transparent",
         )
         
         map <- map %>%
-         addPolygons(
+         addPolygons( # Add Regional District bounds
           data = df_regions_map,
           layerId = ~Regional_District,
           fillColor = ~pal(Disposal_Rate_kg),
@@ -201,7 +200,7 @@ server <- function(input, output, session) {
             format(Population, big.mark = ",")
           )
         ) %>%      
-         addPolygons(
+         addPolygons( # Add tourism region
             data = df_TO_boundary,
             fill = FALSE,
             color = "#D11B4A",
@@ -270,13 +269,12 @@ server <- function(input, output, session) {
       
       geom_col(aes(fill = Regional_District == selectedRegion$Region), linewidth = 1.5)+
       scale_fill_manual(
-        values = c("FALSE" = "#004B55", "TRUE" = "#D11B4A"),
+        values = c("FALSE" = "#004B55", "TRUE" = "#D11B4A"), # Highlight selected district
         guide = "none"
       )+
       
       scale_x_continuous(
         breaks = if (is_narrow) scales::breaks_pretty(n = 4) else seq(0, 1200, by = 100),
-        # labels = function(x) paste0(x / 1e6, "M"),
         expand = expansion(mult = c(0, 0.3))
       )+
       
@@ -317,10 +315,9 @@ server <- function(input, output, session) {
         )
       ) %>%
       config(displayModeBar = FALSE)
-    
   })
  
-  #REACTIVE EVENT FOR HISTORIC BAR CHART ------------------------------------------------- 
+  #OBSERVE EVENT FOR HISTORIC BAR CHART --------------------------------------------------------------------------------
   observeEvent(input$MunicipalWasteMap_shape_click, {
     
     click <- input$MunicipalWasteMap_shape_click
@@ -328,10 +325,11 @@ server <- function(input, output, session) {
     selectedRegion$Region <- click$id
   })
   
+  #REACTIVE EVENT FOR HISTORIC BAR CHART -------------------------------------------------------------------------------
   Region_data <- reactive({  
     req(selectedRegion$Region)
     
-    if (selectedRegion$Region == "Thompson Okanagan") {
+    if (selectedRegion$Region == "Thompson Okanagan") { #if region not selected Thompson Okanagan is the default so summarize for all regions
       
       df_municipal_waste_disposed_TO %>%
         group_by(Year) %>%
@@ -346,7 +344,6 @@ server <- function(input, output, session) {
           Regional_District = "Thompson Okanagan",
           .groups = "drop"
         )
-      
     } else {
       df_municipal_waste_disposed_TO %>%
         filter(
@@ -354,13 +351,14 @@ server <- function(input, output, session) {
         )
     }
   })
-  #HISTORIC BAR CHART 1990 TO MOST RECENT YEAR----------------------------------------
+  
+  #HISTORIC BAR CHART 1990 TO MOST RECENT YEAR--------------------------------------------------------------------------
   output$HistoricalBarPlot <- renderPlotly({
     
     plot_width <- session$clientData$output_HistoricalBarPlot_width
     is_narrow <- !is.null(plot_width) && plot_width < 600
     
-    df <- Region_data()
+    df <- Region_data() # get data for selected region
     
     plot <- ggplot(df, 
              aes(x = Year, 
@@ -371,9 +369,9 @@ server <- function(input, output, session) {
                    "<br><b>Waste Disposal Rate: </b><br>", scales::comma(Disposal_Rate_kg), " kg/person",
                    "<br><b>Population: </b>", scales::comma(Population)
                  ))) + 
-        geom_bar(stat = "identity",
-                 fill = "#76ACA9",
-                 linewidth = 0.5) +
+      geom_bar(stat = "identity",
+               fill = "#76ACA9",
+               linewidth = 0.5) +
      
       scale_x_continuous(
         breaks = seq(
@@ -384,22 +382,22 @@ server <- function(input, output, session) {
         expand = expansion(mult = c(0, 0))
       )+
      
-        scale_y_continuous(expand = c(0,0), 
-                           breaks = c(0, 250, 500, 750, 1000),
-                           labels = c("0", "250", "500", "750", "1,000"),
-                           limits = c(0, 1000)) +
-     
-        labs(
+      scale_y_continuous(expand = c(0,0), 
+                         breaks = c(0, 250, 500, 750, 1000),
+                         labels = c("0", "250", "500", "750", "1,000"),
+                         limits = c(0, 1000)
+                        ) +
+      labs(
           x = NULL, 
           y = "Disposal Rate (kg/person)"
-        ) +
+      ) +
         
-        theme(legend.title = element_blank(),
-              axis.title = element_text(size = if (is_narrow) 10 else 16),
-              axis.text = element_text(size = if (is_narrow) 8 else 12),
-              axis.text.x = element_text(angle = if (is_narrow) 60 else 0))
+      theme(legend.title = element_blank(),
+            axis.title = element_text(size = if (is_narrow) 10 else 16),
+            axis.text = element_text(size = if (is_narrow) 8 else 12),
+            axis.text.x = element_text(angle = if (is_narrow) 60 else 0))
    
-   ggplotly(plot, tooltip = "text") %>%
+   ggplotly(plot, tooltip = "text") %>% #convert to ggplotly for hoverlabel
      layout(
        margin = list(l = 0, r = 10, t = 0, b = 50),
        hoverlabel = list(
@@ -416,12 +414,12 @@ server <- function(input, output, session) {
      config(displayModeBar = FALSE)
   })
   
-  #DYNAMIC UI BOX FOR HISTORIC CHART -----------------------------------------
+  #DYNAMIC UI BOX FOR HISTORIC CHART -----------------------------------------------------------------------------------
   output$HistoricalBarPlotBox <- renderUI({
     
     req(selectedRegion$Region)
     
-    df <- Region_data()
+    df <- Region_data() #get data for selected region
     
     box(
       title = paste0(
@@ -445,7 +443,7 @@ server <- function(input, output, session) {
     )
   })
   
-  #REGIONAL WASTE TABLE------------------------------------------------------------------------
+  #REGIONAL WASTE TABLE-------------------------------------------------------------------------------------------------
   output$RegionTable <- renderUI({
     
     df_municipal_waste_disposed_filtered <- df_municipal_waste_disposed_TO %>%
@@ -494,7 +492,7 @@ server <- function(input, output, session) {
     }
   })
   
-  #BOX UI OUTPUT FOR DYMANIC YEAR IN TITLE FOR DATA TABLE -----------------------------------------------------------------------------------------------------
+  #BOX UI OUTPUT FOR DYMANIC YEAR IN TITLE FOR REGION TABLE ------------------------------------------------------------
   output$RegionTableBox <- renderUI({
     box(
       title = paste0("Data - ", input$year),
@@ -505,11 +503,10 @@ server <- function(input, output, session) {
     )
   })
 
-  #ORGANIC WASTE PAGE ===========================================================================================
+  #ORGANIC WASTE PAGE ==================================================================================================
   
-  #VALUE BOX FOR NUMBER OF ACTIVE COMPOSTING FACILITIES
+  #VALUE BOX FOR NUMBER OF ACTIVE COMPOSTING FACILITIES ----------------------------------------------------------------
   output$NumActive <- renderValueBox({
-    
     valueBox(
       value = paste(nrow(df_organic_waste_bc)),
       subtitle = "Number of compost production facilities",
@@ -518,7 +515,7 @@ server <- function(input, output, session) {
     )
   })
   
-  #VALUE BOX FOR PECENT OF FACILITIES ACCEPTING FOOD WASTE
+  #VALUE BOX FOR PECENT OF FACILITIES ACCEPTING FOOD WASTE -------------------------------------------------------------
   output$PrecentFoodWaste <- renderValueBox({
     
     foodWaste_count <- df_organic_waste_bc %>%
@@ -534,7 +531,7 @@ server <- function(input, output, session) {
     )
   })
   
-  #VALUE BOX FOR PECENT OF FACILITIES ACCEPTING BREWERY WASTE
+  #VALUE BOX FOR PECENT OF FACILITIES ACCEPTING BREWERY WASTE ----------------------------------------------------------
   output$PrecentBreweryWaste <- renderValueBox({
     
     breweryWaste_count <- df_organic_waste_bc %>%
@@ -550,10 +547,10 @@ server <- function(input, output, session) {
     )
   })
   
-  #STORE SELECTED OPERATION
-  selectedAuthNum <- reactiveValues(AuthNum = NULL)
+  #STORE SELECTED OPERATION AUTHORIZATION NUMBER -----------------------------------------------------------------------
+  selectedAuthNum <- reactiveValues(AuthNum = NULL) 
   
-  #MAP OF ACTIVE COMPOSTING OPERATIONS IN THE REGION -----------------------------------------------------------------------------------------------------
+  #MAP OF ACTIVE COMPOSTING OPERATIONS IN THE REGION -------------------------------------------------------------------
   output$OrganicWasteMap <- renderLeaflet({
     
     operation_colors <- c(
@@ -564,7 +561,7 @@ server <- function(input, output, session) {
     m_base <- leaflet(data = df_TO_boundary)  
     m_tiles <- addTiles(m_base)
     m_bound <- addPolygons(m_tiles,
-      data = df_TO_boundary,
+      data = df_TO_boundary, #add Thompson Okanagan region bounds
       fill = FALSE,
       color = "#D11B4A",
       weight = 2,
@@ -597,25 +594,24 @@ server <- function(input, output, session) {
       )
     
     setView(m_markers, lng = -118.196086, lat = 50.998195, zoom = 6)
-    
   })
   
+  #OBSERVE EVENT FOR ORGANIC WASTE MAP MARKERS -------------------------------------------------------------------------
   observeEvent(input$OrganicWasteMap_marker_click, {
     click <- input$OrganicWasteMap_marker_click
     req(click$id)
     selectedAuthNum$AuthNum <- click$id
-    
   })
 
+  #REACIVE EVENT FOR SELECTED MAP MARKER DATA --------------------------------------------------------------------------
   Operation_data <- reactive({  
     if (is.null(selectedAuthNum$AuthNum)) {
       return(data.frame())
     }
-
     df_organic_waste_bc %>% filter(`Authorization Number` == selectedAuthNum$AuthNum)
   })
   
-  #ORGANIC MATERIAL ACCEPTED TABLE
+  #ORGANIC MATERIAL ACCEPTED TABLE -------------------------------------------------------------------------------------
   output$AcceptedTable <- renderUI({
     df <- Operation_data()
     
@@ -653,7 +649,7 @@ server <- function(input, output, session) {
     )
   })
   
-  #ORGANIC MATERIAL NO ACCEPTED TABLE
+  #ORGANIC MATERIAL NO ACCEPTED TABLE ----------------------------------------------------------------------------------
   output$NotAcceptedTable <- renderUI({
     df <- Operation_data()
     
@@ -693,7 +689,7 @@ server <- function(input, output, session) {
     )
   })
   
-  #ORGANIC MATTER ACCEPTED BAR CHART
+  #TYPES OF ORGANIC MATTER ACCEPTED BAR CHART --------------------------------------------------------------------------
   output$OrganicsAcceptedPlot <- renderPlotly({
     
     plot_width <- session$clientData$output_OrganicsAcceptedPlot_width
@@ -730,9 +726,10 @@ server <- function(input, output, session) {
         Material = reorder(Material, Count)
       )
 
-    plot <- ggplot(df_materials, aes(y = Material,
-                                     x = Count, 
-                                     text = paste0("<b>", Count, " out of ", nrow(df_organic_waste_bc), " facilities</b>")))+
+    plot <- ggplot(df_materials, 
+                   aes(y = Material,
+                       x = Count, 
+                       text = paste0("<b>", Count, " out of ", nrow(df_organic_waste_bc), " facilities</b>")))+
       
       geom_col(fill = "#76ACA9", linewidth = 1.5) +
       
@@ -750,7 +747,7 @@ server <- function(input, output, session) {
         axis.text = element_text(size = if (is_narrow) 8 else 12),
       )
     
-    ggplotly(plot, tooltip = "text") %>%
+    ggplotly(plot, tooltip = "text") %>% # Convert to ggplotly for hoverlabel
       layout(
         margin = list(l = 0, r = 10, t = 0, b = 50),
         hoverlabel = list(
@@ -767,10 +764,11 @@ server <- function(input, output, session) {
       config(displayModeBar = FALSE)
   })
   
-  #DYNAMIC TABLE BOX FOR ORGANIC MATTER ACCEPTED
+  #DYNAMIC TABLE BOX FOR ORGANIC MATTER ACCEPTED AND NOT ACCEPTED ------------------------------------------------------
   output$DynamicTableBox <- renderUI({
     
-    df <- Operation_data()
+    df <- Operation_data() #Get reactive data of selected marker
+    
     if(nrow(df) == 0){
         h5("Select a compost facility on the map to view what organic matter is accepted.")
     } else {
@@ -808,11 +806,14 @@ server <- function(input, output, session) {
     }
   })
   
-  #CLICKABLE LINKS ON HOME PAGE
+  #OVERVIEW PAGE =======================================================================================================
+  
+  #CLICKABLE LINK FOR DISPOSAL RATE TAB --------------------------------------------------------------------------------
   observeEvent(input$disposal_rates_link, {
     updateTabItems(session, "tabs", "disposal_rates")
   })
   
+  #CLICKABLE LINK FOR ORGANIC WASTE TAB --------------------------------------------------------------------------------
   observeEvent(input$organic_link, {
     updateTabItems(session, "tabs", "organic")
   })

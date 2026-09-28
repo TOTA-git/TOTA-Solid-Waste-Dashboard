@@ -3485,7 +3485,7 @@
         "Maintainer": "Hadley Wickham <hadley@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2025-11-04 14:00:02 UTC",
-        "Built": "R 4.6.1; ; 2026-07-11 03:23:17 UTC; windows",
+        "Built": "R 4.6.1; ; 2026-09-16 00:43:20 UTC; windows",
         "RemoteType": "standard",
         "RemotePkgRef": "stringr",
         "RemoteRef": "stringr",
@@ -4308,10 +4308,10 @@
       "checksum": "e3e1e083601c34008dde3c7ec1084709"
     },
     "data/cache/organic_waste_lastModified.csv": {
-      "checksum": "d19267b045acac40bce4057ff4c1d703"
+      "checksum": "1719b093c43aa9593821cf4a2c530847"
     },
     "data/cache/refresh_log.csv": {
-      "checksum": "ab055d4c220ac1986f2c17fb2afe2008"
+      "checksum": "2c688cabcabeb7340ecd3eefa1a3f653"
     },
     "data/regional_districts.geojson": {
       "checksum": "807491100c3efd1d81289543289c5a59"
@@ -4323,25 +4323,31 @@
       "checksum": "7919837def6631c704f0b73c82cbda39"
     },
     "data_refresh.R": {
-      "checksum": "b4fcb00d1ca23accecc36e73a94107d7"
+      "checksum": "099db6bc34a66e6615640521ddf5951b"
     },
     "global.R": {
-      "checksum": "a6050ea31aaaa2281db695712ed6e326"
+      "checksum": "b793badeb99b97f6bc592de4c162495f"
     },
     "R/data_helpers.R": {
-      "checksum": "a833f859437acd659410fbfcba529eda"
+      "checksum": "47d3e0879f42be2e2528d89b8c189cd4"
     },
     "README.md": {
       "checksum": "51326659ace8a77de68682c041d1fac2"
     },
     "server.R": {
-      "checksum": "f3e3bca3856734f652f9ecdb5ac001e8"
+      "checksum": "828fbbadeec762d611798b0533106cd6"
     },
     "thompson_okanagan_get_boundary.R": {
       "checksum": "607df57ee9753e0b46d89a9f40f88422"
     },
     "ui.R": {
-      "checksum": "b6898eb2e026976dc38ec819f1669816"
+      "checksum": "8afaf9b6f60dda70173ec5c3c20702b8"
+    },
+    "www/banner.png": {
+      "checksum": "94a93eb7203b469b5941149a442ad223"
+    },
+    "www/region_map_bg.png": {
+      "checksum": "6e7e73cf67fab85b199a8a2c63bae25c"
     },
     "www/side_bar_logo.png": {
       "checksum": "062da536ebd63333edd6a969b28d47d2"

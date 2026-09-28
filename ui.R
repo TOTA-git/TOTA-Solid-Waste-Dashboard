@@ -1,19 +1,16 @@
-library(shiny)
-library(bslib)
-library(shinydashboard)
-library(fresh)
-
-TOTA_theme <- create_theme(
+#UI FOR SOILD WASTE SHINY DASHBOARD==============================================================================
+#THEME ----------------------------------------------------------------------------------------------------------
+TOTA_theme <- create_theme( #Set colours
   adminlte_color(
     light_blue = "#004B55",
     yellow = "#BCB49E",
     orange = "#F6BC1A",
     teal = "#76ACA9",
     fuchsia = "#D11B4A"
-    #red, yellow, aqua, blue, light-blue, green, navy, teal, olive, lime, orange, fuchsia, purple, maroon, black.
   )
 )
 
+#FOOTER ---------------------------------------------------------------------------------------------------------
 footer_TOTA <- tags$footer( 
   tags$style(HTML("
     @media (max-width: 600px) {
@@ -51,7 +48,6 @@ footer_TOTA <- tags$footer(
         style ="color: white;"
       ),
       
-      
       p("2280-D Leckie Road, Kelowna,",
         style = "margin-bottom: 2px;"
       ),
@@ -59,6 +55,7 @@ footer_TOTA <- tags$footer(
       p("British Columbia, V1X 6G6",
         style = "margin-bottom: 0;"
       ),
+      
       id = "footer-text",
       style = "width: 60%; color: white; display: flex; flex-direction: column; justify-content: center; padding-left: 5%;"
     ),
@@ -80,6 +77,7 @@ footer_TOTA <- tags$footer(
   style = "position: relative; bottom: 0; left: 0; width: 100%; z-index: 9999;"
 )
 
+#HEADER -----------------------------------------------------------------------------------------------------------
 ui <- dashboardPage(
   dashboardHeader(
     title = "Solid Waste Dashboard",
@@ -97,7 +95,7 @@ ui <- dashboardPage(
       )
     )             
   ),
-  
+#SIDE BAR / NAV ---------------------------------------------------------------------------------------------------
   dashboardSidebar(
     sidebarMenu(
       id = "tabs",
@@ -119,7 +117,8 @@ ui <- dashboardPage(
       style = "display: block; margin: 0 auto; padding-top: 40px;"
     )
   ),
-  
+
+#OVERVIEW TAB----------------------------------------------------------------------------------------------------
   dashboardBody(
     use_theme(TOTA_theme),
     
@@ -141,9 +140,10 @@ ui <- dashboardPage(
           column(
             width = 12,
             h2("About this Dashboard"),
-            
-            p(
-              "The purpose of this dashboard is to support TOTA's soild waste management reporting for the ",
+            p("Solid waste management is an important component of destination sustainability. 
+              Tourism contributes to waste generation through accommodations, restaurants, retail,
+              recreation and other tourism-related activities. The purpose of this dashboard is to 
+              support TOTA's soild waste management reporting for the ",
               tags$a(
                 href = "https://www.untourism.int/observatories/thompson-okanagan",
                 "UN Tourism International Network of Sustainable Tourism Observatories (INSTO)",
@@ -151,8 +151,7 @@ ui <- dashboardPage(
                 style = "color: #76ACA9; text-decoration: underline;"
               ),
               " and contribute to ongoing efforts to better understand the relationship between
-               solid waste and tourism in the Thompson Okanagan Region."
-            ),
+               solid waste and tourism in the Thompson Okanagan Region."),
             br(),
             style = "font-size: 18px;"
           ),
@@ -161,19 +160,18 @@ ui <- dashboardPage(
             tags$head(tags$style(
               HTML(
                 ".explore-link {
-                                    display: block;
-                                    font-size: 18px;
-                                    font-weight: 600;
-                                    margin-top: 10px;
-                                    margin-bottom: 10px;
-                                    color: #004B55;
-                                    text-decoration: none;
-                                  }
-                                  .explore-link:hover {
-                                    text-decoration: underline;
-                                    cursor: pointer;
-                                  }
-                                "
+                    display: block;
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    color: #004B55;
+                    text-decoration: none;
+               }
+               .explore-link:hover {
+                  text-decoration: underline;
+                  cursor: pointer;
+               }"
               )
             )),
             
@@ -192,23 +190,16 @@ ui <- dashboardPage(
             actionLink(
               "disposal_rates_link",
               strong("Disposal Rates - How much waste is being disposed??"),
-              class = "explore-link",
-              
+              class = "explore-link"
             ),
-            p(
-              "Explore disposal rates and total waste disposed. Compare changes of the years and to B.C. as a whole."
-            ),
+            p("Explore disposal rates and total waste disposed. Compare changes of the years and to B.C. as a whole."),
             
             actionLink(
               "organic_link",
-              strong(
-                "Organic Waste - What compost facilities exist and what do they accept?"
-              ),
+              strong("Organic Waste - What compost facilities exist and what do they accept?"),
               class = "explore-link"
             ),
-            p(
-              "View compost production facilities throughout the Thompson Okanagan and the accepted organic materials."
-            ),
+            p("View compost production facilities throughout the Thompson Okanagan and the accepted organic materials."),
             br()
           ),
           
@@ -219,28 +210,28 @@ ui <- dashboardPage(
               width = "70%",
               style = "display: block; margin: 0 auto;"
             ),
-            
             p("The scope of the dashboard is the Thompson Okanagan Tourism Region,", br(), "British Columbia, Canada", style = "text-align: center; font-size: 14px;"),
           ),
           
           tags$style(
             HTML(
               ".explore-link {
-                              color: #42817A;
-                              font-size: 20px;
-                              font-weight: bold;
-                              text-decoration: none;
-                            }
+                  color: #42817A;
+                  font-size: 20px;
+                  font-weight: bold;
+                  text-decoration: none;
+              }
 
-                            .explore-link:hover {
-                              text-decoration: underline;
-                            }
-                          "
+              .explore-link:hover {
+                  text-decoration: underline;
+              }"
             )
           ),
           style = "width: 100%; padding: 20px; font-size: 18px;"
         )
       ), 
+
+#DISPOSAL RATES TAB ---------------------------------------------------------------------------------------------      
       tabItem(
         tabName = "disposal_rates",
         
@@ -249,8 +240,8 @@ ui <- dashboardPage(
             #MunicipalWasteMap { height: 350px !important; }
             #DisposalRateBarPlot { height: 350px !important; }
             #HistoricalBarPlot { height: 350px !important;}
-          }
-        ")),
+          }"
+        )),
         
         fluidRow(
           box(
@@ -264,8 +255,8 @@ ui <- dashboardPage(
             p("The regional districts make up an area greater than the Thompson Okangan Tourism Region,
                therefore the amount of waste disposed is overestimated."),
             p(paste0(format(BC_total_recent, big.mark = ","), " tonnes of municipal solid waste was disposed if in B.C.", " in ", max(df_municipal_waste_disposed_TO$Year),
-                     ". The Thompson Okanagan Tourism Region disposed of approximately ", format(TO_total_recent, big.mark = ","), " tonnes, contributing ", round((TO_total_recent/BC_total_recent) * 100, digits = 2), "%"), 
-              " to B.C. total waste disposed."),
+                     ". The Thompson Okanagan Tourism Region disposed of approximately ", format(TO_total_recent, big.mark = ","), " tonnes, contributing ", 
+                     round((TO_total_recent/BC_total_recent) * 100, digits = 2), "%"), " to B.C. total waste disposed."),
             style = "font-size: 18px;"
           ),
           
@@ -303,7 +294,7 @@ ui <- dashboardPage(
             solidHeader = TRUE,
             collapsible = TRUE,
             width = 6,
-            leafletOutput("MunicipalWasteMap", height = 500),
+            leafletOutput("MunicipalWasteMap", height = 500)
           ),
           
           box(
@@ -316,7 +307,6 @@ ui <- dashboardPage(
           ),
           
           uiOutput("HistoricalBarPlotBox"),
-          
           uiOutput("RegionTableBox"),
           
           box(
@@ -366,22 +356,23 @@ ui <- dashboardPage(
         )
       ),
       
+#ORGANIC WASTE TAB ----------------------------------------------------------------------------------------------
       tabItem(
         tabName = "organic",
         
         tags$style(HTML("
           @media (max-width: 600px) {
             #OrganicsAcceptedPlot { height: 350px !important; }
-          }
-        ")),
+          }"
+        )),
         
         fluidRow(
           box(
             title = "Organic Waste - What compost facilities exist and what do they accept?",
             p("This data provides an overview of facilities that receive and manage organic waste across the Thompson Okanagan Tourism Region. 
               This includes facility locations, the organic materials they accept and do not accept, and facility capacities.
-            Facilities that accept food, brewery, and winery waste contributes to soild waste management for tourism-related activities such as eating out at restaurants 
-              and visiting breweries and wineries."),
+              Facilities that accept food, brewery, and winery waste contributes to soild waste management for tourism-related activities such 
+              as eating out at restaurants and visiting breweries and wineries."),
             solidHeader = TRUE,
             collapsible = TRUE,
             width = 12,
@@ -395,6 +386,7 @@ ui <- dashboardPage(
             icon = icon("clock-rotate-left"),
             value = paste0("Last Modified: ", format(df_OW_lastModified$`data$lastModified`, "%B %d, %Y"))
           ),
+          
           infoBox(
             title = "Info",
             width = 6,
