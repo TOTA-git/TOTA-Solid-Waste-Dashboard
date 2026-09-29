@@ -53,7 +53,7 @@ server <- function(input, output, session) {
       summarise(TO_total = sum(Total_Disposed_Tonnes, na.rm = TRUE)) %>%
       pull(TO_total)
     
-    TO_precentage <- (TO_total/BC_total)*100
+    
     
     if(BC_total == 0 || TO_total == 0){
       valueBox(
@@ -63,6 +63,8 @@ server <- function(input, output, session) {
         color = "teal"
       )
     } else {
+      TO_precentage <- (TO_total/BC_total)*100
+      
       valueBox(
         value = paste0(round(TO_precentage, digits = 2), "%"),
         subtitle = paste0("Of B.C. total waste disposed for ", input$year),
@@ -87,7 +89,7 @@ server <- function(input, output, session) {
       summarise(prev_period = sum(Total_Disposed_Tonnes, na.rm = TRUE)) %>%
       pull(prev_period)
     
-    YoY_growth <- ((current_period - prev_period) / prev_period) * 100
+    
 
     if(prev_period == 0 || current_period == 0){
       valueBox(
@@ -97,6 +99,8 @@ server <- function(input, output, session) {
         color = "orange"
       )
     } else {
+      YoY_growth <- ((current_period - prev_period) / prev_period) * 100
+      
       valueBox(
         value = if (YoY_growth > 0) paste0("+",round(YoY_growth, digits = 2), "%") else paste0(round(YoY_growth, digits = 2), "%"),
         subtitle = paste0(
