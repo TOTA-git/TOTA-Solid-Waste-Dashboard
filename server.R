@@ -376,6 +376,7 @@ server <- function(input, output, session) {
       geom_bar(stat = "identity",
                fill = "#76ACA9",
                linewidth = 0.5) +
+      
      
       scale_x_continuous(
         breaks = seq(
