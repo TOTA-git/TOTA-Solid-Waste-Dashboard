@@ -306,7 +306,38 @@ ui <- dashboardPage(
             plotlyOutput("DisposalRateBarPlot", height = 500)
           ),
           
-          uiOutput("HistoricalBarPlotBox"),
+          box(
+            title = paste0(
+              "Disposal Rates ",
+              " (",
+              min(df_municipal_waste_disposed_TO$Year, na.rm = TRUE),
+              "-",
+              max(df_municipal_waste_disposed_TO$Year, na.rm = TRUE),
+              ")"
+            ),
+            
+            solidHeader = TRUE,
+            collapsible = TRUE,
+            width = 12,
+            selectInput(
+              "region",
+              "Select Region:",
+              choices = c(
+                "All Regions",
+                "Central Okanagan",
+                "North Okanagan",
+                "Okanagan-Similkameen",
+                "Thompson-Nicola",
+                "Columbia-Shuswap",
+                "Kootenay Boundary",
+                "Fraser-Fort George"
+              ),
+              selected = "All Regions",
+              width = "250"
+            ),
+            plotOutput("HistoricalBarPlot", height = 500)
+          ),
+          
           uiOutput("RegionTableBox"),
           
           box(

@@ -338,7 +338,11 @@ server <- function(input, output, session) {
       df_municipal_waste_disposed_TO %>%
         group_by(Year) %>%
         summarise(
-          Population = sum(Population, na.rm = TRUE),
+          Population = if (all(is.na(Population))) {
+            NA_real_
+          } else {
+            sum(Population, na.rm = TRUE)
+          },
           Total_Disposed_Tonnes = sum(
             Total_Disposed_Tonnes,
             na.rm = TRUE
@@ -357,25 +361,52 @@ server <- function(input, output, session) {
   })
   
   #HISTORIC BAR CHART 1990 TO MOST RECENT YEAR--------------------------------------------------------------------------
-  output$HistoricalBarPlot <- renderPlotly({
+  output$HistoricalBarPlot <- renderPlot({
     
     plot_width <- session$clientData$output_HistoricalBarPlot_width
     is_narrow <- !is.null(plot_width) && plot_width < 600
     
-    df <- Region_data() # get data for selected region
+    if(input$region == "All Regions"){
+     df <- df_municipal_waste_disposed_TO %>%
+        group_by(Year) %>%
+        summarise(
+          Population = if (all(is.na(Population))) {
+            NA_real_
+          } else {
+            sum(Population, na.rm = TRUE)
+          },
+          Total_Disposed_Tonnes = sum(
+            Total_Disposed_Tonnes,
+            na.rm = TRUE
+          ),
+          Disposal_Rate_kg =
+            (Total_Disposed_Tonnes * 1000) / Population,
+          Regional_District = "Thompson Okanagan",
+          .groups = "drop"
+        )
+    }else{
+      df <- df_municipal_waste_disposed_TO %>%
+        filter(Regional_District == input$region)
+    }
     
-    plot <- ggplot(df, 
-             aes(x = Year, 
-                 y = Disposal_Rate_kg,
-                 text = paste0(
+    # Scale population to fit the disposal-rate axis
+    population_scale <- max(df$Disposal_Rate_kg, na.rm = TRUE) /
+      max(df$Population, na.rm = TRUE)
+    
+    ggplot(df, 
+             aes(text = paste0(
                    "<b>", Regional_District, ",</b>",
                    "<br><b>", Year, "</b>",
                    "<br><b>Waste Disposal Rate: </b><br>", scales::comma(Disposal_Rate_kg), " kg/person",
                    "<br><b>Population: </b>", scales::comma(Population)
                  ))) + 
-      geom_bar(stat = "identity",
+      
+      geom_col(aes(x = Year, y = Disposal_Rate_kg),
                fill = "#76ACA9",
                linewidth = 0.5) +
+      
+      geom_line(aes(x = Year, y = Population * population_scale, group = Regional_District), color = "#D11B4A",
+                linewidth = 1) +
       
      
       scale_x_continuous(
@@ -386,66 +417,24 @@ server <- function(input, output, session) {
         ),
         expand = expansion(mult = c(0, 0))
       )+
-     
-      scale_y_continuous(expand = c(0,0), 
-                         breaks = c(0, 250, 500, 750, 1000),
-                         labels = c("0", "250", "500", "750", "1,000"),
-                         limits = c(0, 1000)
-                        ) +
+      
       labs(
-          x = NULL, 
-          y = "Disposal Rate (kg/person)"
+        x = "Year",
+        y = "Disposal Rate (kg/person)"
+      ) +
+     
+      scale_y_continuous(
+        expand = expansion(mult = c(0, 0.1)),
+        sec.axis = sec_axis(
+          ~ . / population_scale,
+          name = "Population",
+          labels = scales::label_comma()
+        )
       ) +
         
-      theme(legend.title = element_blank(),
-            axis.title = element_text(size = if (is_narrow) 10 else 16),
-            axis.text = element_text(size = if (is_narrow) 8 else 12),
-            axis.text.x = element_text(angle = if (is_narrow) 60 else 0))
-   
-   ggplotly(plot, tooltip = "text") %>% #convert to ggplotly for hoverlabel
-     layout(
-       margin = list(l = 0, r = 10, t = 0, b = 50),
-       hoverlabel = list(
-         bgcolor = "#004B55",
-         bordercolor = "#00363D",
-         font = list(
-           color = "white",
-           size = 13,
-           family = "Arial"
-         ),
-         align = "left"
-       )
-     ) %>%
-     config(displayModeBar = FALSE)
-  })
-  
-  #DYNAMIC UI BOX FOR HISTORIC CHART -----------------------------------------------------------------------------------
-  output$HistoricalBarPlotBox <- renderUI({
-    
-    req(selectedRegion$Region)
-    
-    df <- Region_data() #get data for selected region
-    
-    box(
-      title = paste0(
-        "Disposal Rates for ",
-        selectedRegion$Region,
-        " (",
-        min(df$Year, na.rm = TRUE),
-        "-",
-        max(df$Year, na.rm = TRUE),
-        ")"
-      ),
-      p("Click a region on the map above to show disposal rate history for that region."),
-      solidHeader = TRUE,
-      collapsible = TRUE,
-      width = 12,
-      
-      plotlyOutput(
-        "HistoricalBarPlot",
-        height = 500
-      )
-    )
+      theme(axis.title = element_text(size = if (is_narrow) 10 else 20),
+            axis.text = element_text(size = if (is_narrow) 8 else 18),
+            axis.text.x = element_text(angle = if (is_narrow) 50 else 0))
   })
   
   #REGIONAL WASTE TABLE-------------------------------------------------------------------------------------------------
