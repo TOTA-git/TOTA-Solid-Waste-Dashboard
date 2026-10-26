@@ -247,7 +247,6 @@ ui <- dashboardPage(
           box(
             title = "Disposal Rates - How much waste is being disposed?",
             solidHeader = TRUE,
-            collapsible = TRUE,
             width = 12,
             p("The data below focuses on municipal solid waste disposal across the Thompson Okanagan Tourism Region, 
               represented by the regional districts that make up the area: Thompson-Nicola, 
@@ -292,7 +291,6 @@ ui <- dashboardPage(
           box(
             title = "Select a Region",
             solidHeader = TRUE,
-            collapsible = TRUE,
             width = 6,
             leafletOutput("MunicipalWasteMap", height = 500)
           ),
@@ -301,7 +299,6 @@ ui <- dashboardPage(
             title = "Which Region has the Highest Disposal Rate?",
             subtitle = "Put bar chart here",
             solidHeader = TRUE,
-            collapsible = TRUE,
             width = 6,
             plotlyOutput("DisposalRateBarPlot", height = 500)
           ),
@@ -317,7 +314,6 @@ ui <- dashboardPage(
             ),
             
             solidHeader = TRUE,
-            collapsible = TRUE,
             width = 12,
             selectInput(
               "region",
@@ -343,7 +339,6 @@ ui <- dashboardPage(
           box(
             title = "About the Data",
             solidHeader = TRUE,
-            collapsible = TRUE,
             width = 6,
             p("This dashboard uses municipal solid waste disposal data published by Environmental Reporting BC. 
               The dataset provides estimated annual municipal solid waste disposal amounts for British Columbia’s 
@@ -374,7 +369,6 @@ ui <- dashboardPage(
           box(
             title = "References",
             solidHeader = TRUE,
-            collapsible = TRUE,
             width = 12,
             p("Data source: Province of British Columbia. BC Municipal Solid Waste Disposal Rates. 
               Retrieved from https://catalogue.data.gov.bc.ca/dataset/bc-municipal-solid-waste-disposal-rates "),
@@ -405,7 +399,6 @@ ui <- dashboardPage(
               Facilities that accept food, brewery, and winery waste contributes to soild waste management for tourism-related activities such 
               as eating out at restaurants and visiting breweries and wineries."),
             solidHeader = TRUE,
-            collapsible = TRUE,
             width = 12,
             style = "font-size: 18px;"
           ),
@@ -441,7 +434,6 @@ ui <- dashboardPage(
           box(
             title = "Active Compost Facilities",
             solidHeader = TRUE,
-            collapsible = TRUE,
             width = 6,
             leafletOutput("OrganicWasteMap", height = 500),
             uiOutput("DynamicTableBox")
@@ -450,7 +442,6 @@ ui <- dashboardPage(
           box(
             title = "Number of Facilities Accepting Each Organic Material",
             solidHeader = TRUE,
-            collapsible = TRUE,
             width = 6,
             plotlyOutput("OrganicsAcceptedPlot", height = 539),
             subtitle = ""
@@ -459,7 +450,6 @@ ui <- dashboardPage(
           box(
             title = "References",
             solidHeader = TRUE,
-            collapsible = TRUE,
             width = 12,
             p("Data source: Province of British Columbia. Organic Matter Recycling Regulation. Retrieved from https://organicsinfo.gov.bc.ca/api/omrr" ),
             p("Organics Info. Province of British Columbia. https://organicsinfo.gov.bc.ca/"),

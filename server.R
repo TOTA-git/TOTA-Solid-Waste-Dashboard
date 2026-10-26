@@ -491,7 +491,6 @@ server <- function(input, output, session) {
     box(
       title = paste0("Data - ", input$year),
       solidHeader = TRUE,
-      collapsible = TRUE,
       width = 6,
       htmlOutput("RegionTable")
     )
@@ -769,7 +768,6 @@ server <- function(input, output, session) {
       box(
         title = "Facility Details",
         solidHeader = TRUE,
-        collapsible = TRUE,
         width = 12,
         
         fluidRow(
