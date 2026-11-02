@@ -176,7 +176,7 @@ ui <- dashboardPage(
             )),
             
             width = 6,
-            h2("What is solid waste management?"),
+            h2("What is Solid Waste Management?"),
             
             p("Solid waste management refers to the process of collecting and disposing of garbage, recyclables, and organic materials. 
             Waste generation is influenced not only by population, but also by tourists. Solid waste management is also an environmental service, 
@@ -396,7 +396,7 @@ ui <- dashboardPage(
             title = "Organic Waste - What compost facilities exist and what do they accept?",
             p("This data provides an overview of facilities that receive and manage organic waste across the Thompson Okanagan Tourism Region. 
               This includes facility locations, the organic materials they accept and do not accept, and facility capacities.
-              Facilities that accept food, brewery, and winery waste contributes to soild waste management for tourism-related activities such 
+              Facilities that accept food, brewery, and winery waste contributes to solid waste management for tourism-related activities such 
               as eating out at restaurants and visiting breweries and wineries."),
             solidHeader = TRUE,
             width = 12,
