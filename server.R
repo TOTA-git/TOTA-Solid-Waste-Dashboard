@@ -299,6 +299,8 @@ server <- function(input, output, session) {
         y = NULL,
         x = paste0(input$year, " Disposal Rate <br>kg/person")) +
       
+      theme_minimal() +
+      
       theme(
         axis.title = element_text(size = if (is_narrow) 12 else 18),
         axis.text = element_text(size = if (is_narrow) 8 else 12)
@@ -422,6 +424,8 @@ server <- function(input, output, session) {
         x = "Year",
         y = "Disposal Rate (kg/person)"
       ) +
+      
+      theme_minimal() +
      
       scale_y_continuous(
         expand = expansion(mult = c(0, 0.1)),
@@ -734,6 +738,8 @@ server <- function(input, output, session) {
       labs(
         y = "",
         x = "Number of Facilities") +
+      
+      theme_minimal() +
       
       theme(
         axis.title = element_text(size = if (is_narrow) 10 else 16),

@@ -77,7 +77,7 @@ refresh_dataset(
     
     region <- st_transform(region, st_crs(omrr_sf))
     
-    # Keep only OMRR locations inside the thompson okanagna tourism region
+    # Keep only OMRR locations inside the thompson okanagan tourism region
     omrr_sf <- st_filter(
       omrr_sf,
       region,

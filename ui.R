@@ -181,7 +181,7 @@ ui <- dashboardPage(
             p("Solid waste management refers to the process of collecting and disposing of garbage, recyclables, and organic materials. 
             Waste generation is influenced not only by population, but also by tourists. Solid waste management is also an environmental service, 
             as it helps safely manage waste that would otherwise pollute the land and water around us. Waste can be managed by landfills, incineration, 
-            recycling, or repurposing orgainc materials. Effective waste management helps reduce the environmental impacts of waste while supporting 
+            recycling, or repurposing organic materials. Effective waste management helps reduce the environmental impacts of waste while supporting 
             cleaner and healthier communities."),
             br(),
             
@@ -408,7 +408,8 @@ ui <- dashboardPage(
             width = 6,
             color = "light-blue",
             icon = icon("clock-rotate-left"),
-            value = paste0("Last Modified: ", format(df_OW_lastModified$`data$lastModified`, "%B %d, %Y"))
+            value = paste0("Last Modified: ", format(df_OW_lastModified$`data$lastModified`, "%B %d, %Y")),
+            subtitle = "Updated by the Province of British Columbia."
           ),
           
           infoBox(
